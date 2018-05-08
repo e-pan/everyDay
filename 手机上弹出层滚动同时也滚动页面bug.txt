@@ -1,0 +1,35 @@
+1.使用css，如下：
+.modal-open {
+  &, body {
+    overflow: hidden;
+    height: 100%;
+  }
+}
+将.modal-open添加到html上，禁用html和body的滚动条。
+
+2.使用js，如下：
+modal.addEventListener('touchmove', function(e) {
+  e.preventDefault();
+}, false);
+
+3.css结合js
+body.modal-open {
+  position: fixed;
+  width: 100%;
+}
+
+var ModalHelper = (function(bodyCls) {
+  var scrollTop;
+  return {
+    afterOpen: function() {
+      scrollTop = document.scrollingElement.scrollTop;
+      document.body.classList.add(bodyCls);
+      document.body.style.top = -scrollTop + 'px';
+    },
+    beforeClose: function() {
+      document.body.classList.remove(bodyCls);
+      // scrollTop lost after set position:fixed, restore it back.
+      document.scrollingElement.scrollTop = scrollTop;
+    }
+  };
+})('modal-open');
