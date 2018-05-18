@@ -1,0 +1,39 @@
+// 参考数组
+let arr1 = [2,3,4,5,6,8];
+// 业务数组
+let arr2 = [
+	{
+		a: 2
+	},
+	{
+		a: 5
+	}
+]
+// 根据参考数据对业务数组进行补全
+for (let i = 0; i < arr1.length; i++) {
+	let flag = false;
+	let obj = {}
+	for (let j = 0; j < arr2.length; j++) {
+		if (arr1[i] == arr2[j].a) {
+			flag = true;
+	break;
+		}
+	}
+	if (!flag) {
+		obj.a = arr1[i]
+		arr2.push(obj)
+	}
+}
+// 根据数组内的对象进行排序
+arr2.sort(function (obj1, obj2) {
+    var val1 = obj1.a;
+    var val2 = obj2.a;
+    if (val1 < val2) {
+		return -1;
+    } else if (val1 > val2) {
+		return 1;
+    } else {
+		return 0;
+    }
+})
+console.log(arr2)
