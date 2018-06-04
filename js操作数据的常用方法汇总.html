@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>js操作数据的常用方法汇总</title>
+</head>
+<body>
+	<script type="text/javascript">
+		/**
+			* Array.from()
+		**/
+		// 语法 Array.from(arrayLike[, mapFn [, thisArg]])
+		// 参数
+		// arrayLike 想要转换成数组的伪数组对象或可迭代对象。
+		// mapFn (可选参数) 如果指定了该参数，新数组中的每个元素会执行该回调函数。
+		// thisArg (可选参数) 执行回调函数mapFn时this指向的对象。
+
+		// 转换arguments
+		function arrayLike(){
+			return Array.from(arguments)
+		}
+		console.log(arrayLike(1, 2, 3, 'm')) // (4) [1, 2, 3, "m"]
+
+		// 转换map
+		const map1 = new Map()
+		map1.set('a', 1)
+		map1.set('b', 2)
+		console.log(Array.from(map1))	// [['a', 1], ['b', 2]]	
+
+		// 为每一项进行+1的操作
+		const num = [2, 3, 5];
+		const result = Array.from(num, i => i + 1)
+		console.log(result) // (3) [3, 4, 6]
+
+		// 为每一项进行-1操作
+		var reduce = {
+			reduceFun: x => x - 1
+		}
+		const resutl1 = Array.from(
+			num, 
+			// 如果不使用箭头函数可以
+			// function (i) { 
+			// 	console.log(this) 
+			// 	return this.reduceFun(i) 
+			// },
+			// reduce
+			i => {
+				console.log(this.reduce)
+				return this.reduce.reduceFun(i)
+			}
+		)
+		console.log(resutl1) //(3) [1, 2, 4]
+
+		// 数组去重
+		console.log(Array.from(new Set([1, 2, 3, 4,2,3,4]))) //(4) [1, 2, 3, 4]
+		console.log([...new Set([1, 2, 3, 4,2,3,4])]) //(4) [1, 2, 3, 4]
+
+		/**
+			* Array.splice()
+		**/
+		//描述： splice()方法通过删除现用元素或添加新元素来更改一个数组的内容
+		//语法：array.splice(index, deleteNum, delitem1, ...delItemx)
+
+		// 根据数组的下标位置删除数组
+		let indexArr = [1, 2, 5, 7]
+		const index = 2 // 删除数组内第3个
+		console.log(indexArr.splice(index, 1)) // [5]
+		console.log(indexArr) //(3) [1, 2, 7]
+
+		// 根据数组的下标位置添加剂数组
+		let spliceArr = [2, 4, 5]
+		const slpiceIndex = 1
+		console.log(spliceArr) //(5) [2, "s", "b", 4, 5]
+
+		/**
+			* Array.sort()
+		**/
+		//描述：sort()方法对数组元素进行排序，并返回这个数组
+		//语法：arr.sort(compareFunction) compareFunction比较函数为非必填
+		let sortArr = [
+			{id: 1, value: 'aaaa'},
+			{id: 17, value: 'aaaa'},
+			{id: 33, value: 'aaaa'},
+			{id: 22, value: 'aaaa'},
+			{id: 15, value: 'aaaa'},
+		]
+		// 根据对象的属性值进行排序
+		sortArr.sort((a, b) => {
+			const A = a.id 
+			const B = b.id 
+			if (A > B) {
+				return 1
+			} 
+			if (A < B) {
+				return -1
+			}
+			return 0
+		})
+		console.log(sortArr) 
+		// 0:{id: 1, value: "aaaa"}
+		// 1:{id: 15, value: "aaaa"}
+		// 2:{id: 17, value: "aaaa"}
+		// 3:{id: 22, value: "aaaa"}
+		// 4:{id: 33, value: "aaaa"}
+
+		/**
+			* Array.pop()
+		**/
+		//描述：删除一个数组中的最后的一个元素，并且返回这个元素
+		//语法： array.pop()
+		let popArr = [3, 5, 6]
+		popArr.pop()
+		console.log(popArr) //(2) [3, 5]
+
+		/**
+			* Array.shift()
+		**/
+		//描述：删除一个数组中的第一个元素，并且返回这个元素
+		//语法： array.shift()
+		let shiftArr = [3, 7, 9]
+		shiftArr.shift()
+		console.log(shiftArr) //(2) [7, 9]
+
+		/**
+			* Array.push()
+		**/
+		//描述：方法可向数组的末尾添加一个或多个元素，并返回新的长度
+		//语法： array.push()
+		let pushArr = [3, 5, 6]
+		pushArr.push('n', 'b')
+		console.log(pushArr) //(5) [3, 5, 6, "n", "b"]
+
+		/**
+			* Array.unshift()
+		**/
+		//描述：方法可向数组的开头添加一个或多个元素，并返回新的长度
+		//语法： array.unshift()
+		let unshiftArr = [3, 5, 6]
+		unshiftArr.unshift('n', 'b')
+		console.log(unshiftArr) //(5) ["n", "b", 3, 5, 6]
+
+		/**
+			* Array.reverse()
+		**/
+		//描述：reverse方法用于颠倒数组中元素的顺序
+		let reverseArr = ['b', 'd']
+		console.log(reverseArr.reverse()) //(2) ["d", "b"]
+
+		/**
+			* Array.copyWithin()
+		**/
+		//描述：在当前数组内部，将指定位置的成员复制到其他位置,并返回这个数组
+		//语法：array.copyWithin(target, start = 0, end = this.length)
+		let copyWithinArr = ['a', 'b', 'd', 'e']
+		console.log(copyWithinArr.copyWithin(1, 0, 2))
+
+		/**
+			* Array.fill()
+		**/
+		//描述：使用给定值，填充一个数组
+		//语法：Array.fill(value[, start[, end]])
+		let fillArr = [4, 6, 0]
+		console.log(fillArr.fill('a')) //(3) ["a", "a", "a"]
+		console.log(fillArr.fill('b', 1, 3)) //(3) ["a", "b", "b"]
+
+		/**
+			* Array.slice()
+		**/
+		//描述：返回从数组的开始位置到结束位置实行一个浅拷贝，不会改变原数组
+		//语法： array.slice(start, end)
+		let sliceArr = [2, 4, 6, 8]
+		console.log(sliceArr.slice(2)) //(2) [6, 8]	
+
+		// 浅拷贝
+		let sliceArr1 = [{ name: 'aaa' }]
+		let sliceArr2 = sliceArr1.slice()
+		console.log(sliceArr2) // [{ name: 'bbbb' }]
+		sliceArr1[0].name = 'bbbbb'
+		console.log(sliceArr2	) // [{ name: 'bbbb' }]
+
+		/**
+			* Array.join()
+		**/
+		//描述：join() 方法用于把数组(类数组)中的所有元素通过指定的分隔符进行分隔放入一个字符串，返回生成的字符串
+		//语法：array.join([separator])
+		const joinArr = ['hello', 'word']
+		console.log(joinArr.join('&')) //hello&word
+
+		const joniFun = function() {
+			console.log(Array.prototype.join.call(arguments))
+		}
+		joniFun('a', 'b', 'c')
+
+		/**
+			* Array.concat()
+		**/
+		//描述：合并两个或多个数组，返回一个新数组
+		//语法：oldArr.concat(arr1, ....arrx)
+		const concatAtr = ['a', 1]
+		console.log(concatAtr.concat(['b', 2])) // (4) ["a", 1, "b", 2]
+		console.log([5, ...concatAtr, 777]) // (4) [5, "a", 1, 777]
+
+		/**
+			* Array.indexOf()
+		**/
+		//描述：返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1。
+		//语法：array.indexOf(searchElement,fromIndex)
+		//注意：indexOf() 不能识别NaN
+		const indexOfArr = [2, ,3, 5, 6]
+		console.log(indexOfArr.indexOf(5)) // 3
+
+		/**
+			* Array.includes()
+		**/
+		//描述：返回一个布尔值，表示某个数组是否包含给定的值
+		//语法：array.includes(searchElement,fromIndex=0)
+		const includesArr = [1, 2, NaN, 5]
+		console.log(includesArr.includes(NaN)) // true
+
+		/**
+			* Array.forEach()
+		**/
+		//描述: 按升序为数组中含有效值的每一项执行一次回调函数。
+		//语法：array.forEach(function(currentValue, index, arr), thisValue)
+		let forEachArr = [1, 2, , 3, undefined, null] // 最后第二个元素是空的，不会遍历(undefined、null会遍历)
+		let forEachObj = { name: 'aaa' }
+		let forEachResult = forEachArr.forEach(function (currentValue, index, array){
+			forEachArr[1] = 'aaaaa'
+			console.log(currentValue)
+			//break;
+		  return currentValue; // return只能结束本次回调 会执行下次回调
+		  console.log(this.name)
+		}, forEachObj)
+		console.log(forEachResult) // 即使return了一个值,也还是返回undefined
+
+		/**
+			* Array.every()
+		**/ 
+		//描述：方法用于检测数组所有元素是否都符合函数定义的条件
+		//语法：array.every(function(currentValue, index, arr), thisValue)
+		const everyArr = [22, 33, 44, 55]
+		console.log(everyArr.every((x) => x >= 10)) // true
+		console.log(everyArr.every(x => x < 30)) // false
+
+		/**
+			* Array.some()
+		**/ 
+		//描述：数组中的是否有满足判断条件的元素
+		//语法：array.some(function(currentValue, index, arr), thisValue)
+		const someArr = [22, 33, 44, 55]
+		console.log(someArr.some((x) => x >= 100)) // false
+		console.log(someArr.some(x => x < 30)) // true
+
+		/**
+			* Array.filter()
+		**/ 
+		//描述：返回一个新数组, 其包含通过所提供函数实现的测试的所有元素。
+		//语法：let new_array = arr.filter(function(currentValue, index, arr), thisArg)
+		const filterArr = [22, 33, 44, 55]
+		let filterNewAAr = filterArr.filter(currentValue =>  currentValue > 30)
+		console.log(filterNewAAr) //(3) [33, 44, 55]
+
+		/**
+			* Array.map()
+		**/ 
+		//描述：对数组中的每个元素进行处理，返回新的数组
+		//语法：let new_array = arr.map(function(currentValue, index, arr), thisArg)
+		const mapArr = [22, 33, 44, 55]
+		let mapNewAAr = mapArr.map(currentValue =>  currentValue + 30)
+		console.log(mapNewAAr) //(4) [52, 63, 74, 85]
+
+		/**
+			* Array.reduce()  Array.reduceRight()
+		**/
+		//描述：reduce() 方法对累加器和数组中的每个元素（从左到右）应用一个函数，最终合并为一个值。
+		// reduceRight() 从右到左
+		//语法：array.reduce(function(total, currentValue, currentIndex, arr), initialValue)
+		// 数组求和
+		const reduceArr = [2, 3, 4]
+		let reduceResult = reduceArr.reduce((a, b) => a + b)
+		console.log(reduceResult) //9
+
+		// 将二维数组转化为一维 将数组元素展开
+		const reduceArr2 = [[2,3], [4,5,6]]
+		const reduceResult2 = reduceArr2.reduceRight((a, b) => a.concat(b))
+		console.log(reduceResult2) // (5) [4, 5, 6, 2, 3]
+
+		/**
+			* Array.find()
+		**/
+		//描述：用于找出第一个符合条件的数组成员，并返回该成员，如果没有符合条件的成员，则返回undefined
+		//语法：let new_array = arr.find(function(currentValue, index, arr), thisArg)
+		const findArr = [2, 3, 4, NaN]
+		console.log(findArr.find(n => isNaN(n))) // NaN
+		console.log(findArr.find(n => n == 9)) // undefined
+
+		/**
+			* Array.findIndex()
+		**/
+		//描述：返回第一个符合条件的数组成员的位置，如果所有成员都不符合条件，则返回-1
+		//语法：let new_array = arr.findIndex(function(currentValue, index, arr), thisArg)
+		const findIndexArr = [3, 4,5]
+		console.log(findIndexArr.findIndex(a => a == 4)) // 1
+		console.log(findIndexArr.findIndex(b => b == 10)) // -1
+
+		/**
+			* Array.keys() 遍历键名
+			* Array.values() 遍历键值
+			* Array.entries() 遍历键值对
+		**/
+		//描述：三个方法都返回一个新的 Array Iterator 对象，对象根据方法不同包含不同的值。
+		//语法：array.keys()  array.values() array.entries()
+		for (let index of [5, 6].keys()) {
+			console.log(index) // 0, 1
+		}
+		for (let elem of [5, 6].values()) {
+			console.log(elem) // 5, 6
+		}
+		for (let [index, elem] of [5, 6].entries()) {
+			console.log(index + ':' + elem) // 0:5, 1:6
+		}
+	</script>
+</body>
+</html>
