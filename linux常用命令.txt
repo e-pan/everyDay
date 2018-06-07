@@ -7,6 +7,9 @@
 // 查找文件
 # find / -name xxxx
 
+// 查看nginx是否启用
+# ps aux | grep nginx 
+
 // 端口检测
 # netstat -a
 
@@ -19,7 +22,8 @@
 # rm -rf xxxx
 
 // nginx.conf存放路径
-# etc/nginx/nginx.conf
+# /etc/nginx/nginx.conf
+# /usr/local/nginx/conf
 
 // 启动mongodb
 # ./mongod -dbpath /data/db/ -logpath /data/db/mongo.log -logappend -fork -port 27017
