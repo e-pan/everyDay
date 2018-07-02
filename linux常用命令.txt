@@ -28,6 +28,9 @@
 // 启动mongodb
 # ./mongod -dbpath /data/db/ -logpath /data/db/mongo.log -logappend -fork -port 27017
 
+// mongodb位置
+# /usr/local/mongodb/bin
+
 // pm2启动node服务
 # pm2 start bin/www
 
